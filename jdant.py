@@ -85,7 +85,7 @@ class JDUtil:
         brands = ', '.join([t['name'] for t in c['brands']])
         print('共 %d 个品牌：%s' % (len(c['brands']), brands))
 
-        self.printTree(c, 0)
+        self.printAvlTree(c, 0)
 
         print('')
 
@@ -93,3 +93,11 @@ class JDUtil:
         print '    ' * depth + c['name'] + ' ' + c['url']
         if 'subs' in c and len(c['subs']) > 0:
             for s in c['subs']: self.printTree(s, depth + 1)
+
+    def printAvlTree(self, c, depth):
+        if 'subs' in c and len(c['subs']) > 0:
+            print '    ' * depth + c['name']
+            for s in c['subs']: self.printAvlTree(s, depth + 1)
+        else:
+            if 'http://list.jd.com/list.html?cat=' in c['url']:
+                print '    ' * depth + c['name'] + ' ' + c['url']
