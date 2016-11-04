@@ -3,12 +3,18 @@
 
 from parser.jd.catagory import Catagory
 from parser.jd.crawler import Crawler
+from ant import Ant
 
-class JDAnt:
+class JDAnt(Ant):
+    def __init__(self):
+        super(JDAnt, self).__init__()
+
     def run(self):
-        jdcat = Catagory()
+        cat = Catagory()
+        catagories = cat.getTree()
+        self.notifyCatagoryLoaded(catagories);
 
-        for c in jdcat.getTree(): self.printTopCatagory(c)
+        #for c in : self.printTopCatagory(c)
 
     def printTopCatagory(self, c):
         names = ', '.join([t['name'] for t in c['zhuti']])
