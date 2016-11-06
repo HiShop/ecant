@@ -7,7 +7,7 @@ import urllib
 import urllib2
 import json
 
-class Catagory:
+class Category:
     def __init__(self):
         pass
 
@@ -25,13 +25,13 @@ class Catagory:
         r['depth'] = depth
         if depth == 0:
             # 第一层分类使用组合名称
-            subs = [self._parseCatagory(i['n']) for i in c['s']]
+            subs = [self._parseCategory(i['n']) for i in c['s']]
             r['name'] = ' / '.join([t['name'] for t in subs])
             r['url'] = ''
             r['zhuti'] = [self._parseZhuti(ts) for ts in c['t']]
             r['brands'] = [self._parseBrand(bs) for bs in c['b']]
         else:
-            cat = self._parseCatagory(c['n']);
+            cat = self._parseCategory(c['n']);
             r['name'] = cat['name']
             r['url'] = self._parseLink(cat['url'])
 
@@ -63,7 +63,7 @@ class Catagory:
             "logo": sects[2]
         }
 
-    def _parseCatagory(self, s):
+    def _parseCategory(self, s):
         # 文本样例：channel.jd.com/home.html|家居||0
         sects = s.split("|")
         return {

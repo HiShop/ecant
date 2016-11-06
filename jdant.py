@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from parser.jd.catagory import Catagory
+from parser.jd.category import Category
 from parser.jd.crawler import Crawler
 from ant import Ant
 
@@ -10,13 +10,13 @@ class JDAnt(Ant):
         super(JDAnt, self).__init__()
 
     def run(self):
-        cat = Catagory()
+        cat = Category()
         catagories = cat.getTree()
-        self.notifyCatagoryLoaded(catagories);
+        self.notifyCategoryLoaded(catagories);
 
-        #for c in : self.printTopCatagory(c)
+        #for c in : self.printTopCategory(c)
 
-    def printTopCatagory(self, c):
+    def printTopCategory(self, c):
         names = ', '.join([t['name'] for t in c['zhuti']])
         print('共 %d 个主题馆：%s' % (len(c['zhuti']), names))
 

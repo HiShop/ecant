@@ -31,7 +31,7 @@ class Crawler:
             self.parseGoods(gl) for gl in soup.findAll("li", { "class" : "gl-item" })
         ]
 
-        for g in goods: print(g['title'])
+        #for g in goods: print(g['title'])
 
         next = soup.find("a", { "class" : "pn-next" })
         if next:

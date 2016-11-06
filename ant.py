@@ -29,6 +29,6 @@ class Ant(object):
         m.onLoad(self)
         return m
 
-    def notifyCatagoryLoaded(self, catagories):
+    def notifyCategoryLoaded(self, catagories):
         for k in self.plugins:
-            self.plugins[k].onCatagoryLoaded(self, catagories)
+            self.plugins[k].onCategoryLoaded(self, catagories)

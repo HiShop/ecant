@@ -52,7 +52,7 @@ def onLoad(ant):
 
     doAdminLogin(_OPENER)
 
-def onCatagoryLoaded(ant, catagories):
+def onCategoryLoaded(ant, catagories):
     logging.debug('共发现 %d 个顶级分类！' % len(catagories))
     for c in catagories:
         logging.debug('-> %s' % c['name'])
