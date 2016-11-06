@@ -21,12 +21,12 @@ class Ant(object):
 
     def loadPlugin(self, moduleName):
 	m = __import__("plugins." + moduleName, fromlist=[moduleName])
-        m.onLoad(self)
         logging.debug('加载插件：%s（v%s）[plugins/%s.py]' % (
             m.name(),
             m.version(),
             moduleName
         ))
+        m.onLoad(self)
         return m
 
     def notifyCatagoryLoaded(self, catagories):
