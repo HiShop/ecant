@@ -22,6 +22,7 @@ class Category:
 
     def _traverse(self, c, depth):
         r = {}
+        subjs = []
         r['depth'] = depth
         if depth == 0:
             # 第一层分类使用组合名称
@@ -30,13 +31,19 @@ class Category:
             r['url'] = ''
             r['zhuti'] = [self._parseZhuti(ts) for ts in c['t']]
             r['brands'] = [self._parseBrand(bs) for bs in c['b']]
+
+            if 's' in c and 's' in c['s'][0]:
+                subjs = c['s'][0]['s']
         else:
             cat = self._parseCategory(c['n']);
             r['name'] = cat['name']
             r['url'] = self._parseLink(cat['url'])
+            
+            if 's' in c:
+                subjs = c['s']
 
-        if 's' in c and len(c['s']) > 0:
-            r["subs"] = [self._traverse(s, depth + 1) for s in c['s']]
+        if len(subjs) > 0:
+            r["subs"] = [self._traverse(s, depth + 1) for s in subjs]
 
         return r
 
