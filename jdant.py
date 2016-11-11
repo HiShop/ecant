@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from parser.jd.category import Category
-from parser.jd.crawler import Crawler
+from eparser.jd.category import Category
+from eparser.jd.crawler import Crawler
 from ant import Ant
 
 class JDAnt(Ant):
