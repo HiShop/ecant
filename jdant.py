@@ -11,10 +11,10 @@ class JDAnt(Ant):
 
     def run(self):
         cat = Category()
-        catagories = cat.getTree()
-        self.notifyCategoryLoaded(catagories);
+        categories = cat.getTree()
+        self.notifyCategoryLoaded(categories);
 
-        #for c in : self.printTopCategory(c)
+        for c in categories: self.printTopCategory(c)
 
     def printTopCategory(self, c):
         names = ', '.join([t['name'] for t in c['zhuti']])
@@ -23,7 +23,8 @@ class JDAnt(Ant):
         brands = ', '.join([t['name'] for t in c['brands']])
         print('共 %d 个品牌：%s' % (len(c['brands']), brands))
 
-        self.crawl(c, 0)
+        #self.crawl(c, 0)
+        self.printAvlTree(c, 0)
 
         print('')
 
