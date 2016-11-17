@@ -12,10 +12,17 @@ class Ant(object):
         self.loadLocalPlugins()
 
     def loadLocalPlugins(self):
+        ignores = []
+        for line in open('./plugins/.ignore'):
+            ignores.append(line.replace('\n', '').replace('\r', ''))
+
 	for filename in os.listdir("plugins"):
 	    if not filename.endswith(".py") or filename.startswith("__"):
 		continue
-	   
+	  
+	    if filename in ignores:
+		continue
+
             moduleName = os.path.splitext(filename)[0]
             self.plugins[moduleName] = self.loadPlugin(moduleName) 
 
