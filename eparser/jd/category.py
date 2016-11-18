@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
-import random
-import urllib
 import urllib2
+import urlparse
 import json
+import hashlib
 
 class Category:
     def __init__(self):
@@ -24,6 +23,7 @@ class Category:
         r = {}
         subjs = []
         r['depth'] = depth
+        r['fetchable'] = False
         if depth == 0:
             # 第一层分类使用组合名称
             subs = [self._parseCategory(i['n']) for i in c['s']]
@@ -31,21 +31,36 @@ class Category:
             r['url'] = ''
             r['zhuti'] = [self._parseZhuti(ts) for ts in c['t']]
             r['brands'] = [self._parseBrand(bs) for bs in c['b']]
+            r['cid'] = self._cacuCid(r['name'])
 
             if 's' in c and 's' in c['s'][0]:
                 subjs = c['s'][0]['s']
         else:
             cat = self._parseCategory(c['n']);
             r['name'] = cat['name']
-            r['url'] = self._parseLink(cat['url'])
-            
+            url = self._parseLink(cat['url'])
+            jdcid = self._getCatId(url)
+            r['cid'] = self._cacuCid(url)
+            #r['cid'] = self._cacuCid(jdcid if jdcid else url)
+            r['url'] = url
             if 's' in c:
                 subjs = c['s']
 
         if len(subjs) > 0:
             r["subs"] = [self._traverse(s, depth + 1) for s in subjs]
+        elif jdcid:
+            r['fetchable'] = True
 
         return r
+
+    def _cacuCid(self, data):
+        md5 = hashlib.md5()
+        md5.update(data)
+        return md5.hexdigest()
+
+    def _getCatId(self, url):
+        qs = urlparse.parse_qs(urlparse.urlsplit(url).query)
+        return qs['cat'][0] if 'cat' in qs else None
 
     def _parseLink(self, l):
         r = ''

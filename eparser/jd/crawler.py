@@ -23,8 +23,10 @@ class Crawler:
         return gt
 
     def parsePage(self, url):
-        request = urllib2.Request(url)
-        html = urllib2.urlopen(request).read()
+        opener = urllib2.build_opener()
+        html = opener.open(url).read()
+
+        print '%d - %s' % (len(html), url)
 
         soup = BeautifulSoup(html)
         goods = [
