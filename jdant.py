@@ -5,6 +5,7 @@ import signal
 import time
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
+from multiprocessing.dummy import Pool as ThreadPool
 from multiprocessing import Pool
 import logging as LOG
 from eparser.jd.category import Category
@@ -40,7 +41,7 @@ class JDAnt(Ant):
         fetchList = []
         for c in categories: self.traverseToList(c, 0, fetchList)
         #self.doCrawl(fetchList)
-        self.parallelCrawl2(fetchList)
+        self.parallelCrawl3(fetchList)
 
     def crawl(self, c):
         LOG.debug('开始爬取 %s [%s] ...' % (
@@ -59,6 +60,12 @@ class JDAnt(Ant):
 
     def doCrawl(self, tasks):
         for c in tasks: self.crawl(c)
+    
+    def parallelCrawl3(self, tasks):
+        pool = ThreadPool(processes=50)
+        results2 = pool.map(crawl, tasks)
+        pool.close()
+        pool.join()
 
     def parallelCrawl2(self, tasks):
         with ThreadPoolExecutor(max_workers=10) as executor:
