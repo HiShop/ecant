@@ -21,7 +21,7 @@ def crawl(c):
     crawler = Crawler();
     goods = crawler.start(c['url'])
     LOG.debug('[%d] %s %s' % (
-        goods,
+        len(goods),
         c['name'],
         c['url'])
     )
@@ -40,25 +40,14 @@ class JDAnt(Ant):
 
         fetchList = []
         for c in categories: self.traverseToList(c, 0, fetchList)
-        #self.doCrawl(fetchList)
-        self.parallelCrawl3(fetchList)
+        self.doCrawl(fetchList)
+        #self.parallelCrawl2(fetchList)
 
     def crawl(self, c):
-        LOG.debug('开始爬取 %s [%s] ...' % (
-            c['name'],
-            c['cid']
-        ))
-
-        crawler = Crawler();
-        goods = crawler.start(c['url'])
-        LOG.debug('[%d] %s %s' % (
-            goods,
-            c['name'],
-            c['url'])
-        )
-
+        return crawl(c)
 
     def doCrawl(self, tasks):
+        return self.crawl(tasks[0])
         for c in tasks: self.crawl(c)
     
     def parallelCrawl3(self, tasks):
@@ -68,16 +57,25 @@ class JDAnt(Ant):
         pool.join()
 
     def parallelCrawl2(self, tasks):
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = set()
+        with ThreadPoolExecutor(max_workers=50) as executor:
+#                for param, result in zip(tasks, executor.map(self.crawl, tasks)):
+#                    print('%s test: %s' % (param['name'], result))
+            for c in tasks:
+                future = executor.submit(self.crawl, c)
+                futures.add(future)
+        
             try:
-                for param, result in zip(tasks, executor.map(self.crawl, tasks)):
-                    print('%s test: %s' % (param['name'], result))
+                for future in concurrent.futures.as_completed(futures):
+                    err = future.exception()
+                    if err is not None: raise err
             except KeyboardInterrupt:
                 LOG.debug('任务强制中断！')
-                executor.shutdown(wait=False)
+                executor._threads.clear()
+                concurrent.futures.thread._threads_queues.clear()
 
     def parallelCrawl(self, tasks):
-        pool = Pool(20, init_worker)
+        pool = Pool(50, init_worker)
         try:
             results = []
             LOG.debug('开始并行处理')
