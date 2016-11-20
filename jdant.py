@@ -25,6 +25,7 @@ def crawl(c):
         c['name'],
         c['url'])
     )
+    return goods
 
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -44,7 +45,8 @@ class JDAnt(Ant):
         #self.parallelCrawl2(fetchList)
 
     def crawl(self, c):
-        return crawl(c)
+        goods = crawl(c)
+        self.notifyGoodsCollected(c, goods);
 
     def doCrawl(self, tasks):
         return self.crawl(tasks[0])

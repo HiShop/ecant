@@ -21,6 +21,25 @@ def onCategoryLoaded(ant, categories):
         traverseCategory(None, c, 0)
         LOG.debug('')
 
+def onGoodsCollected(ant, c, goods):
+    for g in goods: updateGoods(c, g)
+
+def updateGoods(c, g):
+    gm = {
+        '_id': g['sku'],
+        'cid': c['cid'],
+        'title': g['title'],
+        'url': g['page'],
+        'image': g['image'],
+        'price': g['price'],
+        'last_update': datetime.datetime.now()
+    }
+
+    query = {'_id': gm['_id']}
+    update = {'$set': gm}
+
+    db.goods.update_one(query, update, upsert = True)
+
 def traverseCategory(p, c, depth):
     printCategoryInfo(c, depth)
     updateCategory(p, c)

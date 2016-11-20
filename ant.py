@@ -36,6 +36,10 @@ class Ant(object):
         m.onLoad(self)
         return m
 
-    def notifyCategoryLoaded(self, catagories):
+    def notifyCategoryLoaded(self, categories):
         for k in self.plugins:
-            self.plugins[k].onCategoryLoaded(self, catagories)
+            self.plugins[k].onCategoryLoaded(self, categories)
+
+    def notifyGoodsCollected(self, category, goods):
+        for k in self.plugins:
+            self.plugins[k].onGoodsCollected(self, category, goods)
