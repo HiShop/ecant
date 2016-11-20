@@ -35,14 +35,16 @@ class JDAnt(Ant):
         super(JDAnt, self).__init__()
 
     def run(self):
+        #crawler = Crawler();
+        #return crawler.start('http://list.jd.com/list.html?cat=1672,2577,2589')
         cat = Category()
         categories = cat.getTree()
         self.notifyCategoryLoaded(categories);
 
         fetchList = []
         for c in categories: self.traverseToList(c, 0, fetchList)
-        self.doCrawl(fetchList)
-        #self.parallelCrawl2(fetchList)
+        #self.doCrawl(fetchList)
+        self.parallelCrawl2(fetchList)
 
     def crawl(self, c):
         goods = crawl(c)

@@ -5,6 +5,7 @@ import re
 import logging as LOG
 import random
 import json
+import time
 import urllib
 import urllib2
 from urlparse import urlparse
@@ -63,7 +64,11 @@ class Crawler:
             
     def getPricesGroup(self, area, skus):
         skuIds = 'J_' + '%2CJ_'.join(skus)
-        url = 'http://p.3.cn/prices/mgets?type=1&area=%s&skuIds=%s' % (area, skuIds)
+        url = 'http://p.3.cn/prices/mgets?type=1&area=%s&skuIds=%s&pduid=%d' % (
+            area,
+            skuIds,
+            int(time.time())
+        )
 
         r = {}
         prices = json.loads(urllib2.urlopen(url).read())
