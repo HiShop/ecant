@@ -66,11 +66,12 @@ class Crawler:
         url = 'http://p.3.cn/prices/mgets?type=1&area=%s&skuIds=%s' % (area, skuIds)
 
         r = {}
-        for s in json.loads(urllib2.urlopen(url).read()):
+        prices = json.loads(urllib2.urlopen(url).read())
+        for s in prices:
             r[s['id'][2:]] = {
-                'p': s['p'],
-                'm': s['m'],
-                'op': s['op']
+                'p': float(s['p']),
+                'm': float(s['m']),
+                'op': float(s['op'])
             }
             
         return r
