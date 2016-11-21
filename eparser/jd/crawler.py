@@ -27,7 +27,7 @@ class Crawler:
 
     def parsePage(self, url):
         LOG.debug('分析分类列表页 %s' % url)
-        html = urllib2.urlopen(url).read()
+        html = urllib2.urlopen(url, timeout=30).read()
         se = Selector(text=html)
 
         script = se.xpath('//script/text()')[0].extract()
@@ -71,7 +71,7 @@ class Crawler:
         )
 
         r = {}
-        prices = json.loads(urllib2.urlopen(url).read())
+        prices = json.loads(urllib2.urlopen(url, timeout=30).read())
         for s in prices:
             r[s['id'][2:]] = {
                 'p': float(s['p']),
