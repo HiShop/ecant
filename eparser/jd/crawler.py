@@ -87,7 +87,7 @@ class Crawler:
         img = img if img else e.xpath('.//div[@class="p-img"]/a/img/@data-lazy-img')
         g = {
             'sku': sku,
-            'title': e.xpath('.//div[@class="p-name"]/a/em/text()').extract()[0],
+            'title': e.xpath('.//div[@class="p-name"]/a/em/text()').extract()[0].replace('\n', '').strip().replace('"', '').replace("'", '').replace(',', ''),
             'image': img[0].extract(),
             'page': e.xpath('.//div[@class="p-name"]/a/@href').extract()[0],
             'price': prices[sku]
