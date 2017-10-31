@@ -85,9 +85,14 @@ class Crawler:
         sku = e.xpath('.//div[contains(@class, "j-sku-item")]/@data-sku').extract()[0]
         img = e.xpath('.//div[@class="p-img"]/a/img/@src')
         img = img if img else e.xpath('.//div[@class="p-img"]/a/img/@data-lazy-img')
+        
+        title = re.sub(r'[\n\'",]', '', ''.join(
+            e.xpath('.//div[@class="p-name"]/a/em/text()').extract()
+        )).strip()
+
         g = {
             'sku': sku,
-            'title': e.xpath('.//div[@class="p-name"]/a/em/text()').extract()[0].replace('\n', '').strip().replace('"', '').replace("'", '').replace(',', ''),
+            'title': title,
             'image': img[0].extract(),
             'page': e.xpath('.//div[@class="p-name"]/a/@href').extract()[0],
             'price': prices[sku]
