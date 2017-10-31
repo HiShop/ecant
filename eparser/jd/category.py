@@ -40,7 +40,7 @@ class Category:
             r['name'] = cat['name']
             url = self._parseLink(cat['url'])
             jdcid = self._getCatId(url)
-            r['cid'] = self._cacuCid(url)
+            r['cid'] = self._cacuCid(r['name'] + url)
             #r['cid'] = self._cacuCid(jdcid if jdcid else url)
             r['url'] = url
             if 's' in c:
